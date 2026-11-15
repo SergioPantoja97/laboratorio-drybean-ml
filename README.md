@@ -11,7 +11,7 @@ Proyecto académico de Machine Learning para clasificar granos de frijol a parti
 | Variable objetivo | `Class` |
 | Clases | 7 variedades |
 | Características predictoras | 16 medidas geométricas |
-| Lenguaje y herramientas | Python, pandas, scikit-learn y joblib |
+| Lenguaje y herramientas | Python, pandas, scikit-learn, joblib y Streamlit |
 | Gestión del proyecto | CRISP-DM, TDSP y Scrum ML |
 
 ## Equipo y responsabilidades
@@ -114,6 +114,16 @@ Si PowerShell impide activar el entorno virtual, también puedes ejecutar el scr
 
 Abre [`notebooks/01_laboratorio_drybean.ipynb`](notebooks/01_laboratorio_drybean.ipynb) en Visual Studio Code o Jupyter y selecciona el entorno de Python del proyecto. Ejecuta las celdas en orden o usa **Run All**. El notebook explica cada fase, presenta el EDA con gráficas y termina con un guion breve para la exposición.
 
+### Dashboard visual para exposición
+
+Desde la raíz del repositorio y con el entorno virtual activado, inicia el dashboard con:
+
+```powershell
+python -m streamlit run app.py
+```
+
+La app muestra un resumen para el Product Owner, gráficas de EDA, la organización Scrum propuesta, comparación y errores de los modelos, y una demo de predicción con el modelo guardado. Si aún no existen los artefactos locales, ejecuta primero `python .\src\laboratorio_drybean.py`. El dashboard usa archivos locales de `data/` y `outputs/`; no vuelve a descargar el conjunto en cada inicio.
+
 ### Ejecución en macOS o Linux
 
 ```bash
@@ -149,6 +159,10 @@ Los archivos de resultados se regeneran al ejecutar el script. Revisa las fechas
 
 ```text
 laboratorio_drybean_ml/
+├── .gitignore
+├── app.py                    # Dashboard interactivo para exposición
+├── README.md                 # Guía del proyecto y del laboratorio
+├── requirements.txt          # Dependencias de Python
 ├── data/
 │   ├── raw/                  # Fuente original
 │   └── processed/            # Datos preparados
@@ -157,10 +171,8 @@ laboratorio_drybean_ml/
 ├── outputs/
 │   ├── models/               # Modelos serializados
 │   └── reports/              # Métricas, gráficas y documentación
-├── src/
-│   └── laboratorio_drybean.py
-├── requirements.txt
-└── README.md
+└── src/
+    └── laboratorio_drybean.py  # Flujo reproducible de Machine Learning
 ```
 
 ## Metodología
