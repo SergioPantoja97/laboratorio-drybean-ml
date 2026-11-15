@@ -42,6 +42,50 @@ El reporte generado contiene la interpretación de las métricas, las respuestas
 - [Reporte de resultados](outputs/reports/reporte_resultados.md)
 - [Backlog, plan de sprints y evidencia Scrum ML](outputs/reports/scrum_ml.md)
 
+## Respuestas a las preguntas del laboratorio
+
+Las respuestas se basan en la ejecución del script sobre el conjunto oficial de UCI, con la limpieza de duplicados y la partición de prueba documentadas arriba.
+
+### Comprensión y análisis de datos
+
+1. **¿Cuántas columnas tiene el dataset?** 17 en total: 16 variables predictoras y la columna objetivo `Class`.
+2. **¿Cuál es la variable objetivo?** `Class`, que identifica la variedad del grano.
+3. **¿El problema es de clasificación o regresión?** Es clasificación multiclase: el modelo asigna cada observación a una de siete variedades discretas.
+4. **¿Las clases están balanceadas? ¿Cómo puede afectar al entrenamiento?** No están perfectamente balanceadas. En el conjunto depurado, la clase más frecuente tiene aproximadamente 6,79 veces los ejemplos de la menos frecuente. El modelo puede favorecer las clases mayoritarias y ocultar errores en las minoritarias si solo se mira Accuracy; por eso se revisan F1 macro y métricas por clase.
+
+### Modelado y evaluación
+
+5. **¿Por qué se usa un modelo baseline?** La regresión logística ofrece una referencia sencilla y reproducible. Permite comprobar si un modelo más complejo, como Random Forest, aporta una mejora que justifique su complejidad.
+6. **¿Por qué F1 macro puede ser más informativo que Accuracy cuando las clases no están balanceadas?** F1 macro calcula el F1 de cada clase y luego los promedia con el mismo peso. Accuracy, en cambio, cuenta los aciertos globales y puede quedar dominado por las clases con más observaciones.
+7. **¿Qué clases se confunden más y por qué?** En la partición de prueba de Random Forest, las confusiones mutuas más altas fueron entre **DERMASON** y **SIRA**. Una posible explicación es que algunas medidas de forma o tamaño se solapen entre esas variedades; esto es una hipótesis para investigar y no demuestra causalidad.
+8. **¿Qué métrica usarías para escoger el mejor modelo y por qué?** F1 macro como criterio principal cuando se quiere dar importancia similar a cada variedad, complementado con recall por clase y Accuracy. Si el negocio asigna costos diferentes a cada tipo de error, la decisión debe considerar esos costos explícitamente.
+9. **¿Qué harías si una clase tuviera muchos más errores que las demás?** Revisaría sus ejemplos, etiquetas y características; analizaría su matriz de confusión y recall; buscaría más datos representativos y probaría ajustes como pesos de clase o remuestreo. Compararía alternativas con validación estratificada sin usar el conjunto de prueba para ajustar el modelo.
+
+### Reflexiones sobre el proceso
+
+1. **¿Qué fase de CRISP-DM fue más importante?** La comprensión y preparación de los datos: detectar duplicados, revisar la distribución de clases y entender las medidas condiciona la validez de los modelos y de su evaluación.
+2. **¿Qué ventaja ofrece TDSP frente a trabajar con archivos desordenados?** Permite ubicar y versionar los datos, el código, los modelos y los reportes, además de repetir experimentos con decisiones trazables.
+3. **¿Cómo ayuda Scrum ML cuando el resultado es incierto?** Divide el trabajo en entregas pequeñas, facilita revisar resultados al final de cada sprint y permite priorizar el siguiente experimento con base en evidencia.
+4. **¿Por qué se usa un baseline?** Para establecer una referencia cuantitativa antes de invertir en modelos más complejos.
+5. **¿Qué métrica elegirías y por qué?** F1 macro, dado que las clases no tienen el mismo número de ejemplos y cada variedad debe evaluarse. La selección final también depende del costo operativo de cada error.
+6. **¿Qué harías ante errores concentrados en una clase?** Inspeccionaría esa clase y sus errores, verificaría la calidad de las etiquetas, probaría más datos o pesos de clase y validaría los cambios con particiones estratificadas.
+7. **¿Qué información se necesita antes de producción?** Criterios de aceptación y costo de errores; datos de operación representativos; controles de calidad y privacidad; requisitos de integración y latencia; monitoreo de desempeño y deriva; y un proceso de mantenimiento y reentrenamiento.
+
+### Daily Scrum y retrospectiva
+
+Las preguntas del Daily Scrum —qué hizo cada integrante, qué hará a continuación y qué bloqueos tiene— son personales y deben responderse con información de cada reunión. No se asignan respuestas individuales sin confirmación; utilicen la tabla de seguimiento en [scrum_ml.md](outputs/reports/scrum_ml.md).
+
+**Borrador de retrospectiva técnica para validar con el equipo:**
+
+| Pregunta | Respuesta propuesta basada en la ejecución |
+|---|---|
+| ¿Qué salió bien? | El dataset oficial se cargó; se reportaron calidad y duplicados; la partición fue reproducible; y se generaron métricas, matriz de confusión y modelo serializado. |
+| ¿Qué fue difícil? | Las clases tienen frecuencias distintas, hubo 68 filas duplicadas y la mejora de F1 macro de Random Forest sobre el baseline fue pequeña (aproximadamente 0,0001). |
+| ¿Qué mejoraríamos? | Comparar estabilidad mediante validación cruzada estratificada, revisar las confusiones DERMASON/SIRA y acordar previamente los costos de error relevantes para el negocio. |
+| ¿Qué aprendizaje técnico obtuvimos? | Accuracy por sí sola puede ser insuficiente; F1 macro y métricas por clase aportan contexto. Además, Random Forest no requiere el escalamiento aplicado al baseline lineal. |
+
+Este borrador resume evidencia técnica del experimento, no sustituye la retrospectiva del equipo. Revisen y ajusten las respuestas a lo que realmente ocurrió en cada sprint.
+
 ## Inicio rápido
 
 ### Requisitos
