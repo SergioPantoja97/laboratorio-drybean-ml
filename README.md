@@ -110,6 +110,10 @@ La primera ejecución descarga el archivo ARFF oficial y lo guarda en `data/raw/
 
 Si PowerShell impide activar el entorno virtual, también puedes ejecutar el script directamente usando el intérprete de Python instalado, después de instalar las dependencias.
 
+### Libro interactivo para exposición
+
+Abre [`notebooks/01_laboratorio_drybean.ipynb`](notebooks/01_laboratorio_drybean.ipynb) en Visual Studio Code o Jupyter y selecciona el entorno de Python del proyecto. Ejecuta las celdas en orden o usa **Run All**. El notebook explica cada fase, presenta el EDA con gráficas y termina con un guion breve para la exposición.
+
 ### Ejecución en macOS o Linux
 
 ```bash
@@ -130,9 +134,12 @@ python src/laboratorio_drybean.py
 | `outputs/reports/reporte_resultados.md` | Resultados, interpretación y respuestas de las actividades. |
 | `outputs/reports/scrum_ml.md` | Roles, Product Backlog, tablero, sprints y plantillas de seguimiento. |
 | `outputs/reports/metricas.json` | Accuracy y F1 macro de cada modelo. |
+| `outputs/reports/metricas_notebook.json` | Métricas guardadas al ejecutar el libro interactivo. |
 | `outputs/reports/reporte_clasificacion_*.txt` | Precisión, recall y F1 por clase. |
 | `outputs/reports/matriz_confusion.csv` y `.png` | Errores y aciertos por clase. |
 | `outputs/reports/importancia_variables.csv` y `.png` | Importancia estimada de características para Random Forest. |
+| `outputs/reports/distribucion_caracteristicas.png` | Histogramas de medidas geométricas seleccionadas. |
+| `outputs/reports/correlacion_caracteristicas.png` | Mapa de calor de correlaciones entre características. |
 | `outputs/reports/predicciones_drybean.csv` | Etiquetas reales y predicciones para el conjunto de prueba. |
 | `outputs/reports/calidad_datos.csv` y `resumen_descriptivo.csv` | Tipos, valores faltantes, valores únicos y estadísticas descriptivas. |
 
@@ -145,7 +152,8 @@ laboratorio_drybean_ml/
 ├── data/
 │   ├── raw/                  # Fuente original
 │   └── processed/            # Datos preparados
-├── notebooks/                # Espacio para exploración opcional
+├── notebooks/
+│   └── 01_laboratorio_drybean.ipynb  # Guía interactiva para exposición
 ├── outputs/
 │   ├── models/               # Modelos serializados
 │   └── reports/              # Métricas, gráficas y documentación

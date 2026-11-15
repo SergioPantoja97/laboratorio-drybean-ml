@@ -1,0 +1,10 @@
+{
+  "Regresi?n log?stica (baseline)": {
+    "accuracy": 0.9191583610188261,
+    "f1_macro": 0.9302365421734592
+  },
+  "Random Forest": {
+    "accuracy": 0.9191583610188261,
+    "f1_macro": 0.9303396642494651
+  }
+}
