@@ -26,6 +26,41 @@ El equipo combina responsabilidades de producto, facilitación, preparación de 
 | **ML Engineer** | Andres David Bolañoz Paz | Implementa y evalúa el modelo baseline, mantiene la reproducibilidad de los experimentos y apoya la serialización del modelo. |
 | **ML Engineer** | Eliana Ordoñez Candimance | Implementa y evalúa el modelo alternativo, compara métricas, examina errores por clase y apoya la selección del modelo final. |
 
+## Sprints técnicos y responsables
+
+Este resumen describe el trabajo técnico de los **dos primeros sprints** y enlaza sus evidencias. Los archivos verifican los resultados del laboratorio; no reemplazan el registro de reuniones, fechas, acuerdos ni aceptación formal del equipo. Esos datos deben completarse con lo ocurrido realmente.
+
+### Sprint 1 — Comprensión y preparación de datos
+
+**Objetivo:** obtener una fuente trazable, revisar su calidad, comprender las variedades y preparar una partición reproducible para modelado.
+
+| Responsable | Aporte en el sprint | Resultado o evidencia |
+|---|---|---|
+| **Dilmer Gutierrez — Data Engineer / Analyst** | Cargar la fuente UCI, revisar dimensiones, tipos, valores faltantes, duplicados, clases y características; preparar el conjunto limpio. | 13.611 registros originales, 17 columnas, cero faltantes y 68 duplicados. Después de retirarlos quedaron **13.543 registros**. Evidencia: [datos preparados](data/processed/dry_bean_clean.csv), [calidad](outputs/reports/calidad_datos.csv) y [análisis descriptivo](outputs/reports/resumen_descriptivo.csv). |
+| **Andres David Bolañoz Paz — ML Engineer** | Apoyar la preparación de una partición estratificada y reproducible para evaluar los modelos en el siguiente sprint. | Partición de entrenamiento/prueba **80/20**, estratificada y con `random_state=42`, documentada en el [notebook](notebooks/01_laboratorio_drybean.ipynb) y el [script](src/laboratorio_drybean.py). |
+| **Sergio Luis Pantoja Lasso — Product Owner** | Enmarcar el problema y revisar que la preparación responda al objetivo de apoyar la clasificación de variedades. | El objetivo de negocio está descrito en este README; la aceptación formal de criterios debe confirmarse con el equipo. |
+| **Luis Gerardo Restrepo Arredondo — Scrum Master** | Facilitar la planificación y mantener visibles el backlog, avances y bloqueos del sprint. | El plan está en [scrum_ml.md](outputs/reports/scrum_ml.md). Fechas y registros de Daily Scrum permanecen por completar con información real. |
+
+**Resultado técnico:** las siete clases presentan distintas frecuencias; la clase más frecuente tiene aproximadamente **6,79 veces** los registros de la menos frecuente. Se documentó la distribución para contextualizar el modelado y el uso de F1 macro.
+
+### Sprint 2 — Modelado y evaluación
+
+**Objetivo:** comparar un modelo baseline y una alternativa con la misma partición de prueba, analizar los errores y dejar una recomendación provisional.
+
+| Responsable | Aporte en el sprint | Resultado o evidencia |
+|---|---|---|
+| **Andres David Bolañoz Paz — ML Engineer** | Entrenar la regresión logística como baseline y conservar el escalamiento dentro de un pipeline para evitar fuga de información. | Accuracy **0,9192** y F1 macro **0,9302**. |
+| **Eliana Ordoñez Candimance — ML Engineer** | Entrenar Random Forest con pesos balanceados y revisar el desempeño por clase, la matriz de confusión y la importancia de variables. | Accuracy **0,9192** y F1 macro **0,9303**. Evidencia: [métricas](outputs/reports/metricas.json), [matriz de confusión](outputs/reports/matriz_confusion_random_forest.png) e [importancia de variables](outputs/reports/importancia_variables.png). |
+| **Dilmer Gutierrez — Data Engineer / Analyst** | Aportar el contexto del EDA y revisar, junto con ML, las confusiones entre variedades y su relación con los datos. | DERMASON y SIRA presentan las confusiones mutuas más altas en esta partición; esto describe el resultado y no demuestra una causa física. |
+| **Sergio Luis Pantoja Lasso — Product Owner** | Contrastar los resultados con la necesidad del negocio y validar los criterios para elegir el modelo. | La selección de Random Forest es **provisional**: su ventaja de F1 macro es aproximadamente **0,0001**. La aceptación final del Product Owner está pendiente. |
+| **Luis Gerardo Restrepo Arredondo — Scrum Master** | Facilitar el seguimiento del sprint y dejar visibles resultados, pendientes y próximos pasos. | El seguimiento propuesto se documenta en [scrum_ml.md](outputs/reports/scrum_ml.md); no se inventan fechas ni actas de reuniones. |
+
+**Resultado técnico:** ambos modelos obtuvieron el mismo Accuracy en la partición; la diferencia mínima en F1 macro no permite afirmar una superioridad concluyente. La decisión debe revisarse con métricas por clase, estabilidad del modelo y el costo de los errores.
+
+### Continuidad del plan
+
+El plan Scrum completo conserva un tercer sprint para serialización, documentación, presentación y revisión final. Sus artefactos técnicos están disponibles en el repositorio, pero la aceptación del equipo, las fechas y la retrospectiva deben validarse y registrarse aparte.
+
 ## Resultados de la ejecución de referencia
 
 Se evaluaron los modelos con una partición estratificada de entrenamiento y prueba de 80/20 y `random_state=42`. Después de revisar y retirar duplicados, el conjunto quedó con **13.543 filas** y **17 columnas**. No se encontraron valores faltantes.
@@ -192,11 +227,11 @@ La organización separa datos originales y procesados, código fuente, modelos y
 
 ### Scrum ML
 
-El trabajo se organiza en tres incrementos:
+El plan completo se organiza en tres sprints. Este README desarrolla los dos sprints técnicos documentados arriba; el tercero corresponde a la entrega y revisión final:
 
-1. **Comprensión y preparación:** fuente, calidad de datos, análisis exploratorio y partición.
-2. **Modelado y evaluación:** baseline, modelo alternativo y comparación de métricas.
-3. **Despliegue y documentación:** serialización, reporte, revisión final y presentación.
+1. **Sprint 1 — Comprensión y preparación:** fuente, calidad de datos, análisis exploratorio y partición.
+2. **Sprint 2 — Modelado y evaluación:** baseline, modelo alternativo y comparación de métricas.
+3. **Sprint 3 — Despliegue y documentación:** serialización, reporte, revisión final y presentación; la aceptación y evidencia de reuniones siguen pendientes.
 
 El estado y la planificación detallada están en [scrum_ml.md](outputs/reports/scrum_ml.md). Completen las reuniones, revisiones y retrospectivas con lo que efectivamente ocurra; no se deben presentar como realizadas de antemano.
 

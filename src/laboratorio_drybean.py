@@ -86,9 +86,9 @@ def save_class_distribution(class_counts: pd.Series) -> None:
         index=False,
     )
     axis = class_counts.plot(kind="bar", figsize=(9, 5), color="#4472C4")
-    axis.set_title("Distribucion de clases Dry Bean")
-    axis.set_xlabel("Clase de frijol")
-    axis.set_ylabel("Cantidad de registros")
+    axis.set_title("Distribución de variedades de frijol")
+    axis.set_xlabel("Variedad de frijol")
+    axis.set_ylabel("Número de registros")
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.savefig(ROOT / "outputs" / "reports" / "distribucion_clases.png", dpi=150)
